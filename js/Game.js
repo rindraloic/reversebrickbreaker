@@ -31,12 +31,14 @@ function Game(){
   let level=1;
   
   let sound = new Howl({
-  urls: ['res/audio/boss.wav'],
-  onload: function() { 
-	 start();
-  }
-});
+		urls: ['res/audio/boss.wav'],
+		onload: function() { 
+		start();
+		}
+	});
   
+	sessionStorage.setItem("highScore",0);
+	
   //BALLS
   function addBall(){
 		let x = canvas.width/2; 
@@ -251,16 +253,26 @@ function Game(){
 				
 				barre.draw(ctx); 
 				dessinerEtDeplacerLesBalles();
-				fontSize = 20;
+				fontSize = 18;
 				//score
 				ctx.font = fontSize + 'px Courier bold';
 				ctx.fillStyle = 'white';
 				ctx.fillText("SCORE : "+score,10,30);
-				fontSize = 20;
+				
+				//highscore
+				if(sessionStorage.highScore>0){
+					fontSize = 18;
+					ctx.font = fontSize + 'px Courier bold';
+					ctx.fillStyle = 'white';
+					ctx.fillText("SCORE élevé: "+sessionStorage.highScore,140,30);
+					
+				}
+				
 				//level
+				fontSize = 20;
 				ctx.font = fontSize + 'px Courier bold';
 				ctx.fillStyle = 'white';
-				ctx.fillText("Level  "+level,300,30);
+				ctx.fillText("Level  "+level,320,30);
 				
 				//combo
 				ctx.fillStyle = "rgba(255, 235, 59, " + alpha + ")";
@@ -280,6 +292,9 @@ function Game(){
 				
 				break;
 			case gameState.over:
+				if(score > sessionStorage.highScore) sessionStorage.highScore = score;
+				console.log("highScore == "+sessionStorage.highScore);
+
 				fontSize = 50;
 				ctx.font = fontSize + 'px Courier BOLD';
 				ctx.fillStyle = '#ffa71d';
@@ -288,7 +303,12 @@ function Game(){
 				fontSize = 20;
 				ctx.font = fontSize + 'px Courier BOLD';
 				ctx.fillStyle = 'white';
-				ctx.fillText("SCORE Final: "+score,125,height/2+50);
+				ctx.fillText("SCORE Final: "+score,125,height/2+35);
+
+				fontSize = 20;
+				ctx.font = fontSize + 'px Courier BOLD';
+				ctx.fillStyle = 'white';
+				ctx.fillText("SCORE élevé: "+sessionStorage.highScore,125,height/2+65);
 
 				fontSize = 15;
 				ctx.font = fontSize + 'px Courier BOLD';
