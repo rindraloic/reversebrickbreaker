@@ -7,6 +7,13 @@ function Game(){
 	let nbCombo = 0;
 	let spawnInterval=500;
 	let timeoutTable=[];
+	let alpha=1;
+	let dX=0;
+	let interval = setInterval(function () {
+				alpha = alpha - 0.05; // decrease opacity (fade out)
+				dX+=2;
+			}, 50);
+	let comboX,comboY;
   let gameState = {
 	load:0,
     running: 1,
@@ -170,7 +177,8 @@ function Game(){
 		}
 		if((b.y + 2*b.rayon) > canvas.height){
 			nbCombo++;
-			combo = "+"+nbCombo;
+			combo = "x"+nbCombo;
+			
 			score = score+100 +nbCombo*10;
 			disappear(b);
 		}
@@ -198,7 +206,13 @@ function Game(){
 				b.changeColor();
 			}	
 			else{
+				alpha=1;
+				dX=0;
+				comboX=b.x;
+				comboY=b.y;
 				if(b.isBonus){
+					nbCombo++;
+					combo="x"+nbCombo;
 					createBonusExplosion(b.x,b.y);
 					//Kill all balls if bonus caught
 					while(tableauxBalls.length>0){
@@ -249,10 +263,10 @@ function Game(){
 				ctx.fillText("Level  "+level,300,30);
 				
 				//combo
-				fontSize = 35;
-				ctx.font = fontSize + 'px Courier BOLD';
-				ctx.fillStyle = '#004444';
-				ctx.fillText(combo,50,height-200);
+				ctx.fillStyle = "rgba(255, 235, 59, " + alpha + ")";
+				ctx.font = '35px Courier BOLD';
+				ctx.fillText(combo,comboX,comboY-dX);
+				
 				
 				// number of ms since last frame draw
 				delta = timer(time);
@@ -284,10 +298,11 @@ function Game(){
 				gameOver();
 				break;
 			case gameState.pause:
-			fontSize = 50;
+				fontSize = 50;
 				ctx.font = fontSize + 'px Courier BOLD';
 				ctx.fillStyle = 'white';
 				ctx.fillText("PAUSE",130,height/2);
+					
 				break;
 		}
 
@@ -311,6 +326,7 @@ function Game(){
 			setTimeout(addBall,spawnInterval);
 			currentGameState = gameState.running;
 			addEcouteurs(this);
+			//fadeOut("BONJOUR",ctx);
 			requestAnimationFrame(mainLoop);
 	    }
 	}
