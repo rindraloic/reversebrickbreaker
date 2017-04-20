@@ -303,12 +303,12 @@ function Game(){
 				fontSize = 20;
 				ctx.font = fontSize + 'px Courier BOLD';
 				ctx.fillStyle = 'white';
-				ctx.fillText("SCORE Final: "+score,125,height/2+35);
+				ctx.fillText("SCORE : "+score,125,height/2+35);
 
 				fontSize = 20;
 				ctx.font = fontSize + 'px Courier BOLD';
 				ctx.fillStyle = 'white';
-				ctx.fillText("SCORE élevé: "+sessionStorage.highScore,125,height/2+65);
+				ctx.fillText("Meilleur score: "+sessionStorage.highScore,125,height/2+65);
 
 				fontSize = 15;
 				ctx.font = fontSize + 'px Courier BOLD';
